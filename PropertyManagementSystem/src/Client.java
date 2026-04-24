@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.awt.EventQueue;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -35,27 +36,11 @@ import StartPanel;
 
 public class Client {
 	
-
 	String username = "root";
 	String password = "";
 	Statement mystatobj = null;
 	Connection con= null;
 	
-	
-	
-	
-/*static Connection con() {	
-	try {
-		String driver = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost/propertymanagementsystem";
-		return DriverManager.getConnection(url, "root", "szabist@100");
-	}
-	catch (SQLException e) {
-		System.out.println("Error!");
-	}
-	return null;
-}*/
-
 	private JFrame frame;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField app_id;
@@ -65,7 +50,6 @@ public class Client {
 	private JTextField p_id;
 	private JTable propertytable;
 	private JTable table;
-
 	
 	public static void main(String[] args) {
 		Statement mystatObj = null;
@@ -80,14 +64,14 @@ public class Client {
 			}
 		});
 	}
-
+	
 	/**
 	 * Create the application.
 	 */
 	public Client() {
 		initialize();
 	}
-
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -105,16 +89,16 @@ public class Client {
 	private JTextField tenantid;
 	private JTextField startDate;
 	private JTable tenanttable;
+	
 	private void initialize() {
-		
 		
 		connection = DBconnection.getConnection();
 		frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.setResizable(false);
 		frame.setLocationByPlatform(true);
-		frame.setSize(new Dimension(1400, 1080));
-		frame.setBounds(100, 100, 1428, 783);
+		frame.setSize(1428, 783);
+        frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -134,6 +118,8 @@ public class Client {
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setBorder(new CompoundBorder());
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton.setOpaque(true);
+		btnNewButton.setContentAreaFilled(true);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -149,7 +135,6 @@ public class Client {
 			}
 		});
 		propertiespanel.setLayout(null);
-		
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(1, 126, 1060, 274);
@@ -228,6 +213,8 @@ public class Client {
 		btnNewButton_3_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton_3_1.setBorder(new CompoundBorder());
 		btnNewButton_3_1.setBackground(new Color(204, 255, 204));
+		btnNewButton_3_1.setOpaque(true);
+		btnNewButton_3_1.setContentAreaFilled(true);
 		Tenants.add(btnNewButton_3_1);
 		
 		JButton add2_1 = new JButton("ADD");
@@ -241,6 +228,8 @@ public class Client {
 		add2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		add2_1.setBorder(new CompoundBorder());
 		add2_1.setBackground(new Color(204, 255, 204));
+		add2_1.setOpaque(true);
+		add2_1.setContentAreaFilled(true);
 		Tenants.add(add2_1);
 		
 		JButton btnNewButton_2_1_1 = new JButton("UPDATE");
@@ -254,6 +243,8 @@ public class Client {
 		btnNewButton_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton_2_1_1.setBorder(new CompoundBorder());
 		btnNewButton_2_1_1.setBackground(new Color(204, 255, 204));
+		btnNewButton_2_1_1.setOpaque(true);
+		btnNewButton_2_1_1.setContentAreaFilled(true);
 		Tenants.add(btnNewButton_2_1_1);
 		
 		JButton btnNewButton_1_1_1_1 = new JButton("DELETE");
@@ -267,6 +258,8 @@ public class Client {
 		btnNewButton_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton_1_1_1_1.setBorder(new CompoundBorder());
 		btnNewButton_1_1_1_1.setBackground(new Color(204, 255, 204));
+		btnNewButton_1_1_1_1.setOpaque(true);
+		btnNewButton_1_1_1_1.setContentAreaFilled(true);
 		Tenants.add(btnNewButton_1_1_1_1);
 		
 		JLabel tenantNO = new JLabel("Tenant NO");
@@ -326,7 +319,7 @@ public class Client {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
 				SaveToTenant();
 			}}
-			});
+		});
 		endDate.setBounds(692, 591, 246, 34);
 		endDate.setColumns(10);
 		Tenants.add(endDate);
@@ -362,6 +355,8 @@ public class Client {
 		btnNewButton_3.setBackground(new Color(204, 255, 204));
 		btnNewButton_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_3.setBorder(new CompoundBorder());
+		btnNewButton_3.setOpaque(true);
+		btnNewButton_3.setContentAreaFilled(true);
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -395,6 +390,8 @@ public class Client {
 		add2.setBackground(new Color(204, 255, 204));
 		add2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		add2.setBorder(new CompoundBorder());
+		add2.setOpaque(true);
+		add2.setContentAreaFilled(true);
 		add2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SaveToAppointment();
@@ -408,6 +405,8 @@ public class Client {
 		btnNewButton_2_1.setBackground(new Color(204, 255, 204));
 		btnNewButton_2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_2_1.setBorder(new CompoundBorder());
+		btnNewButton_2_1.setOpaque(true);
+		btnNewButton_2_1.setContentAreaFilled(true);
 		btnNewButton_2_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UpdateAppointment();
@@ -421,6 +420,8 @@ public class Client {
 		btnNewButton_1_1_1.setBackground(new Color(204, 255, 204));
 		btnNewButton_1_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_1_1_1.setBorder(new CompoundBorder());
+		btnNewButton_1_1_1.setOpaque(true);
+		btnNewButton_1_1_1.setContentAreaFilled(true);
 		btnNewButton_1_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DeleteAppointment();
@@ -564,6 +565,8 @@ public class Client {
 		JButton btnNewButton_4 = new JButton("LOAD");
 		btnNewButton_4.setBounds(57, 681, 89, 23);
 		btnNewButton_4.setBackground(new Color(204, 255, 204));
+		btnNewButton_4.setOpaque(true);
+		btnNewButton_4.setContentAreaFilled(true);
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -585,6 +588,8 @@ public class Client {
 		JButton btnNewButton_1_2 = new JButton("ADD");
 		btnNewButton_1_2.setBounds(185, 681, 89, 23);
 		btnNewButton_1_2.setBackground(new Color(204, 255, 204));
+		btnNewButton_1_2.setOpaque(true);
+		btnNewButton_1_2.setContentAreaFilled(true);
 		btnNewButton_1_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SaveToComment();
@@ -598,6 +603,8 @@ public class Client {
 		JButton btnNewButton_2_2 = new JButton("UPDATE");
 		btnNewButton_2_2.setBounds(332, 681, 89, 23);
 		btnNewButton_2_2.setBackground(new Color(204, 255, 204));
+		btnNewButton_2_2.setOpaque(true);
+		btnNewButton_2_2.setContentAreaFilled(true);
 		btnNewButton_2_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UpdateComment();
@@ -611,6 +618,8 @@ public class Client {
 		JButton btnNewButton_1_1_2 = new JButton("DELETE");
 		btnNewButton_1_1_2.setBounds(474, 681, 89, 23);
 		btnNewButton_1_1_2.setBackground(new Color(204, 255, 204));
+		btnNewButton_1_1_2.setOpaque(true);
+		btnNewButton_1_1_2.setContentAreaFilled(true);
 		btnNewButton_1_1_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DeleteComment();
@@ -656,11 +665,12 @@ public class Client {
 		sidepanel.add(panel_1);
 		panel_1.setLayout(null);
 		
+		// PROPERTIES ICON - Fixed position
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.addMouseListener(new MouseAdapter() {
-		});
-		lblNewLabel.setBounds(16, 0, 50, 63);
-		// lblNewLabel.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-property-48.png"));
+		ImageIcon propIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/properties.png");
+		Image scaledProp = propIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+		lblNewLabel.setIcon(new ImageIcon(scaledProp));
+		lblNewLabel.setBounds(15, 14, 35, 35);
 		panel_1.add(lblNewLabel);
 		
 		JPanel panel_1_1_1 = new JPanel();
@@ -669,9 +679,12 @@ public class Client {
 		panel_1_1_1.setBounds(0, 337, 372, 63);
 		sidepanel.add(panel_1_1_1);
 		
+		// COMMENTS ICON - Fixed position
 		JLabel lblNewLabel_2_1 = new JLabel("");
-		// lblNewLabel_2_1.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-comment-64.png"));
-		lblNewLabel_2_1.setBounds(10, 0, 60, 63);
+		ImageIcon commentIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/comments.png");
+		Image scaledComment = commentIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+		lblNewLabel_2_1.setIcon(new ImageIcon(scaledComment));
+		lblNewLabel_2_1.setBounds(15, 14, 35, 35);
 		panel_1_1_1.add(lblNewLabel_2_1);
 		
 		JButton btnNewButton_4_2 = new JButton("Comments");
@@ -696,7 +709,9 @@ public class Client {
 		});
 		btnNewButton_4_2.setForeground(new Color(255, 255, 255));
 		btnNewButton_4_2.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-		btnNewButton_4_2.setBackground(new Color(0, 139, 139));
+		btnNewButton_4_2.setBackground(new Color(0,139,139));
+		btnNewButton_4_2.setOpaque(true);
+		btnNewButton_4_2.setContentAreaFilled(true);
 		
 		JPanel panel_1_1_2 = new JPanel();
 		panel_1_1_2.setLayout(null);
@@ -704,9 +719,12 @@ public class Client {
 		panel_1_1_2.setBounds(0, 709, 372, 63);
 		sidepanel.add(panel_1_1_2);
 		
+		// EXIT ICON - Fixed position
 		JLabel lblNewLabel_2_2 = new JLabel("");
-		// lblNewLabel_2_2.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-exit-64.png"));
-		lblNewLabel_2_2.setBounds(10, 0, 64, 63);
+		ImageIcon exitIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/exit.png");
+		Image scaledExit = exitIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+		lblNewLabel_2_2.setIcon(new ImageIcon(scaledExit));
+		lblNewLabel_2_2.setBounds(18, 16, 30, 30);
 		panel_1_1_2.add(lblNewLabel_2_2);
 		
 		JButton btnNewButton_4_3 = new JButton("EXIT");
@@ -731,7 +749,9 @@ public class Client {
 		btnNewButton_4_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_4_3.setForeground(new Color(255, 255, 255));
 		btnNewButton_4_3.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-		btnNewButton_4_3.setBackground(new Color(0, 139, 139));
+		btnNewButton_4_3.setBackground(new Color(0,139,139));
+		btnNewButton_4_3.setOpaque(true);
+		btnNewButton_4_3.setContentAreaFilled(true);
 		
 		JLabel lblNewLabel_6 = new JLabel("Property Managemet System");
 		lblNewLabel_6.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -749,9 +769,12 @@ public class Client {
 		lblNewLabel_6_1.setBounds(31, 185, 306, 28);
 		sidepanel.add(lblNewLabel_6_1);
 		
+		// MAIN LOGO IMAGE - Fixed position
 		JLabel lblNewLabel_1 = new JLabel("");
-		// lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-mansion-100 (1).png"));
-		lblNewLabel_1.setBounds(133, -7, 134, 220);
+		ImageIcon logoIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/PropertyManagementSystem.png");
+		Image scaledLogo = logoIcon.getImage().getScaledInstance(120, 100, Image.SCALE_SMOOTH);
+		lblNewLabel_1.setIcon(new ImageIcon(scaledLogo));
+		lblNewLabel_1.setBounds(126, 30, 120, 100);
 		sidepanel.add(lblNewLabel_1);
 		
 		JButton btnNewButton_4_1_1 = new JButton("Properties");
@@ -778,7 +801,9 @@ public class Client {
 		});
 		btnNewButton_4_1_1.setForeground(new Color(255, 255, 255));
 		btnNewButton_4_1_1.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-		btnNewButton_4_1_1.setBackground(new Color(0, 139, 139));
+		btnNewButton_4_1_1.setBackground(new Color(0,139,139));
+		btnNewButton_4_1_1.setOpaque(true);
+		btnNewButton_4_1_1.setContentAreaFilled(true);
 		
 		JPanel panel_1_1_2_1 = new JPanel();
 		panel_1_1_2_1.setLayout(null);
@@ -786,6 +811,7 @@ public class Client {
 		panel_1_1_2_1.setBounds(0, 636, 372, 63);
 		sidepanel.add(panel_1_1_2_1);
 		
+		// LOGOUT ICON - Fixed position
 		JLabel lblNewLabel_2_2_1 = new JLabel("");
 		lblNewLabel_2_2_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -796,8 +822,10 @@ public class Client {
 			}
 		});
 		lblNewLabel_2_2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		// lblNewLabel_2_2_1.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-logout-rounded-down-64.png"));
-		lblNewLabel_2_2_1.setBounds(10, 0, 64, 63);
+		ImageIcon logoutIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/logout.png");
+		Image scaledLogout = logoutIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+		lblNewLabel_2_2_1.setIcon(new ImageIcon(scaledLogout));
+		lblNewLabel_2_2_1.setBounds(15, 14, 35, 35);
 		panel_1_1_2_1.add(lblNewLabel_2_2_1);
 		
 		JButton btnNewButton_4_3_1 = new JButton("LOGOUT");
@@ -821,10 +849,13 @@ public class Client {
 		btnNewButton_4_3_1.setForeground(Color.WHITE);
 		btnNewButton_4_3_1.setFont(new Font("Bahnschrift", Font.BOLD, 18));
 		btnNewButton_4_3_1.setBorder(null);
-		btnNewButton_4_3_1.setBackground(new Color(0, 139, 139));
+		btnNewButton_4_3_1.setBackground(new Color(0,139,139));
 		btnNewButton_4_3_1.setBounds(80, 0, 292, 63);
+		btnNewButton_4_3_1.setOpaque(true);
+		btnNewButton_4_3_1.setContentAreaFilled(true);
 		panel_1_1_2_1.add(btnNewButton_4_3_1);
 	}
+	
 	private void SaveToTenant() {
 		connection = DBconnection.getConnection();
 		try {
@@ -848,6 +879,7 @@ public class Client {
 		}
 		
 	}
+	
 	private void UpdateTenant() {
 		connection = DBconnection.getConnection();
 		try {
@@ -860,7 +892,6 @@ public class Client {
 			ps.setNString(4, startDate.getText());
 			ps.setNString(5, endDate.getText());
 			ps.setNString(6, tenantName.getText());
-			//ps.setNString(2, textField_1.getText());
 			ps.execute();
 			
 			JOptionPane.showMessageDialog(null, "Record Updated");
@@ -870,9 +901,8 @@ public class Client {
 			O.printStackTrace();
 		}
 		
-}
-
-
+	}
+	
 	private void DeleteTenant() {
 		connection = DBconnection.getConnection();
 		try {
@@ -887,7 +917,7 @@ public class Client {
 			O.printStackTrace();
 		}
 	}
-
+	
 	private void SaveToComment() {
 		connection = DBconnection.getConnection();
 		try {
@@ -907,6 +937,7 @@ public class Client {
 		}
 		
 	}
+	
 	private void UpdateComment() {
 		connection = DBconnection.getConnection();
 		try {
@@ -916,12 +947,6 @@ public class Client {
 			ps.setNString(1, p_id.getText());
 			ps.setNString(2, date.getText());
 			ps.setNString(3, comment.getText());
-			
-			//ps.setNString(2, textField_1.getText());
-		
-		
-
-		
 			ps.execute();
 			
 			JOptionPane.showMessageDialog(null, "Record Updated");
@@ -931,7 +956,8 @@ public class Client {
 			O.printStackTrace();
 		}
 		
-}
+	}
+	
 	private void DeleteComment() {
 		connection = DBconnection.getConnection();
 		try {
@@ -946,6 +972,7 @@ public class Client {
 			O.printStackTrace();
 		}
 	}
+	
 	private void SaveToAppointment() {
 		connection = DBconnection.getConnection();
 		try {
@@ -966,6 +993,7 @@ public class Client {
 		}
 		
 	}
+	
 	private void UpdateAppointment() {
 		connection = DBconnection.getConnection();
 		try {
@@ -1005,10 +1033,8 @@ public class Client {
 			O.printStackTrace();
 		}
 	}
-
+	
 	public void setVisible(boolean b) {
 		frame.setVisible(true);
-	
-		
 	}
 }

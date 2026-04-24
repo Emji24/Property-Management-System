@@ -2,6 +2,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.BorderFactory;
+import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -18,12 +20,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
-
+import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.BorderFactory;
+import javax.swing.border.LineBorder;
+
 public class LoginFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -33,7 +37,7 @@ public class LoginFrame extends JFrame {
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
-	private JPanel panel;
+	private JLabel backgroundLabel;
 
 	/**
 	 * Launch the application.
@@ -58,12 +62,24 @@ public class LoginFrame extends JFrame {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 892, 622);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(new Color(0, 139, 139)); // Set contentPane background to match
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		lblNewLabel_3 = new JLabel("X");
+		// Background Label with properly scaled image
+		backgroundLabel = new JLabel("");
+		backgroundLabel.setBounds(0, 0, 892, 622);
+		ImageIcon bgIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/loginbg.png");
+		Image scaledBg = bgIcon.getImage().getScaledInstance(892, 622, Image.SCALE_SMOOTH);
+		backgroundLabel.setIcon(new ImageIcon(scaledBg));
+		backgroundLabel.setBackground(new Color(0, 139, 139));
+		backgroundLabel.setOpaque(true);
+		contentPane.add(backgroundLabel);
+		
+		lblNewLabel_3 = new JLabel("x");
 		lblNewLabel_3.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setForeground(new Color(220, 20, 60));
@@ -86,15 +102,17 @@ public class LoginFrame extends JFrame {
 				dispose();
 			}
 		});
-		lblNewLabel_4.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-exit-64.png"));
+		ImageIcon exitIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/exit.png");
+		Image scaledExit = exitIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+		lblNewLabel_4.setIcon(new ImageIcon(scaledExit));
 		lblNewLabel_4.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_4.setForeground(new Color(220, 20, 60));
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 31));
-		lblNewLabel_4.setBounds(0, 0, 64, 64);
-		contentPane.add(lblNewLabel_4);
-		lblNewLabel_3.setBounds(857, 0, 35, 34);
-		contentPane.add(lblNewLabel_3);
+		lblNewLabel_4.setBounds(10, 11, 45, 45);
+		backgroundLabel.add(lblNewLabel_4);
+		lblNewLabel_3.setBounds(845, 0, 35, 34);
+		backgroundLabel.add(lblNewLabel_3);
 		
 		JButton btnNewButton = new JButton("LOG IN");
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -104,20 +122,16 @@ public class LoginFrame extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					//Class.forName("com.mysql.jdbc.Driver");
-					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/propertymanagementsystem","root","szabist@100");
+					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/propertymanagementsystem","root","");
 					String username = user.getText();
 					String password = pass.getText();
 					Statement stm = con.createStatement();
 					String sql = "select * from users where username='"+username+"'and Password='"+password+"'";
 					ResultSet rs = stm.executeQuery(sql);
 					if(rs.next()) {
-						//JOptionPane.showMessageDialog(null, "OKAY");
 						PrpertyManagementSystem pms = new PrpertyManagementSystem();
 						pms.setVisible(true);
 						dispose();
-						
-						
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Incorrect Username or Password");
@@ -125,37 +139,40 @@ public class LoginFrame extends JFrame {
 						pass.setText("");
 					}
 					con.close();
-					} catch (Exception g) {
+				} catch (Exception g) {
 					JOptionPane.showMessageDialog(null, g);
 				}
 			}
 		});
-		btnNewButton.setBackground(new Color(0, 128, 128));
+		btnNewButton.setBackground(new Color(0, 139, 139));
 		btnNewButton.setForeground(new Color(255, 245, 238));
 		btnNewButton.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		btnNewButton.setBounds(375, 432, 169, 46);
-		contentPane.add(btnNewButton);
+		btnNewButton.setOpaque(true);
+		btnNewButton.setContentAreaFilled(true);
+		// Add a white border to the button
+		btnNewButton.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
+		backgroundLabel.add(btnNewButton);
 		
 		lblNewLabel_2 = new JLabel("Password");
 		lblNewLabel_2.setForeground(new Color(255, 245, 238));
 		lblNewLabel_2.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		lblNewLabel_2.setAlignmentY(1.0f);
 		lblNewLabel_2.setBounds(285, 323, 121, 21);
-		contentPane.add(lblNewLabel_2);
+		backgroundLabel.add(lblNewLabel_2);
 		
 		lblNewLabel_1 = new JLabel("USERNAME");
 		lblNewLabel_1.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		lblNewLabel_1.setForeground(new Color(255, 245, 238));
 		lblNewLabel_1.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		lblNewLabel_1.setBounds(285, 201, 121, 21);
-		contentPane.add(lblNewLabel_1);
+		backgroundLabel.add(lblNewLabel_1);
 		
 		pass = new JTextField();
 		pass.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()== KeyEvent.VK_ENTER) {
 					try {
-						//Class.forName("com.mysql.jdbc.Driver");
 						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/propertymanagementsystem","root","");
 						String username = user.getText();
 						String password = pass.getText();
@@ -163,12 +180,9 @@ public class LoginFrame extends JFrame {
 						String sql = "select * from users where username='"+username+"'and Password='"+password+"'";
 						ResultSet rs = stm.executeQuery(sql);
 						if(rs.next()) {
-							//JOptionPane.showMessageDialog(null, "OKAY");
 							PrpertyManagementSystem pms = new PrpertyManagementSystem();
 							pms.setVisible(true);
 							dispose();
-							
-							
 						}
 						else {
 							JOptionPane.showMessageDialog(null, "Incorrect Username or Password");
@@ -176,31 +190,27 @@ public class LoginFrame extends JFrame {
 							pass.setText("");
 						}
 						con.close();
-						} catch (Exception g) {
+					} catch (Exception g) {
 						JOptionPane.showMessageDialog(null, g);
 					}
-				
 				}
-				}
+			}
 		});
 		pass.setForeground(new Color(255, 248, 220));
 		pass.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		pass.setColumns(10);
-		pass.setBackground(new Color(0, 128, 128));
+		pass.setBackground(new Color(0, 139, 139));
+		pass.setCaretColor(Color.WHITE);
 		pass.setBounds(285, 355, 346, 46);
-		contentPane.add(pass);
+		backgroundLabel.add(pass);
 		
 		user = new JTextField();
 		user.setForeground(new Color(255, 245, 238));
 		user.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-		user.setBackground(new Color(0, 128, 128));
+		user.setBackground(new Color(0, 139, 139));
+		user.setCaretColor(Color.WHITE);
 		user.setBounds(285, 229, 346, 46);
-		contentPane.add(user);
 		user.setColumns(10);
-		
-		panel = new JPanel();
-		panel.setBackground(new Color(0, 139, 139));
-		panel.setBounds(0, 0, 892, 622);
-		contentPane.add(panel);
+		backgroundLabel.add(user);
 	}
 }

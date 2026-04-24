@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -37,13 +38,14 @@ public class StartPanel extends JFrame {
 	public StartPanel() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 867, 644);
+		setSize(867, 644);           
+                setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel_6_1 = new JLabel("____________________________________");
+		JLabel lblNewLabel_6_1 = new JLabel("_________________________________");
 		lblNewLabel_6_1.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNewLabel_6_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6_1.setForeground(Color.WHITE);
@@ -60,9 +62,11 @@ public class StartPanel extends JFrame {
 		contentPane.add(lblNewLabel_6);
 		
 		JLabel lblNewLabel_3 = new JLabel("");
-		// lblNewLabel_3.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-mansion-100 (1).png"));
-		lblNewLabel_3.setBounds(365, 30, 102, 147);
-		contentPane.add(lblNewLabel_3);
+                ImageIcon originalIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/PropertyManagementSystem.png");
+                Image scaledImage = originalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                lblNewLabel_3.setIcon(new ImageIcon(scaledImage));
+                lblNewLabel_3.setBounds(365, -24, 204, 294);  // Doubled the size
+                contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("");
 		lblNewLabel_2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -74,10 +78,14 @@ public class StartPanel extends JFrame {
 				dispose();
 			}
 		});
-		// lblNewLabel_2_1.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-client-100.png"));
-		lblNewLabel_2_1.setBounds(510, 295, 102, 100);
-		contentPane.add(lblNewLabel_2_1);
-		
+                
+		// Scale the client image to be larger/smaller
+                ImageIcon originalClientIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/client.png");
+                Image scaledClientImage = originalClientIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                lblNewLabel_2_1.setIcon(new ImageIcon(scaledClientImage));
+                lblNewLabel_2_1.setBounds(507, 275, 150, 150);
+                contentPane.add(lblNewLabel_2_1);
+                
 		JLabel lblNewLabel_1_1 = new JLabel("CLIENT");
 		lblNewLabel_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblNewLabel_1_1.addMouseListener(new MouseAdapter() {
@@ -103,9 +111,13 @@ public class StartPanel extends JFrame {
 				dispose();
 			}
 		});
-		// lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-administrator-male-skin-type-7-100.png"));
-		lblNewLabel_2.setBounds(235, 295, 102, 100);
-		contentPane.add(lblNewLabel_2);
+		
+               // Scale to a better size
+               ImageIcon originalAdminIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/admin.png");
+               Image scaledAdminImage = originalAdminIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+               lblNewLabel_2.setIcon(new ImageIcon(scaledAdminImage));
+               lblNewLabel_2.setBounds(230, 275, 150, 150);  // Match the scaled size
+               contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_1 = new JLabel("ADMIN");
 		lblNewLabel_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -128,7 +140,7 @@ public class StartPanel extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel_3_1 = new JLabel("X");
+		JLabel lblNewLabel_3_1 = new JLabel("x");
 		lblNewLabel_3_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblNewLabel_3_1.addMouseListener(new MouseAdapter() {
 			@Override

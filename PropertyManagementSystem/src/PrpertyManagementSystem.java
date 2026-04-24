@@ -813,7 +813,7 @@ public class PrpertyManagementSystem {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 		});
 		lblNewLabel.setBounds(16, 0, 50, 63);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-property-48.png"));
+		lblNewLabel.setIcon(new ImageIcon("/Users/edmarsalido/Documents/Images/properties.png"));
 		panel_1.add(lblNewLabel);
 		
 		JPanel panel_1_1 = new JPanel();
@@ -823,7 +823,7 @@ public class PrpertyManagementSystem {
 		sidepanel.add(panel_1_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-appointment-64.png"));
+		lblNewLabel_2.setIcon(new ImageIcon("/Users/edmarsalido/Documents/Images/appointment.png"));
 		lblNewLabel_2.setBounds(10, 0, 60, 63);
 		panel_1_1.add(lblNewLabel_2);
 		
@@ -858,7 +858,7 @@ public class PrpertyManagementSystem {
 		sidepanel.add(panel_1_1_1);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("");
-		lblNewLabel_2_1.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-comment-64.png"));
+		lblNewLabel_2_1.setIcon(new ImageIcon("/Users/edmarsalido/Documents/Images/comments.png"));
 		lblNewLabel_2_1.setBounds(10, 0, 60, 63);
 		panel_1_1_1.add(lblNewLabel_2_1);
 		
@@ -900,7 +900,7 @@ public class PrpertyManagementSystem {
 			}
 		});
 		lblNewLabel_2_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblNewLabel_2_2.setIcon(new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-exit-64.png"));
+		lblNewLabel_2_2.setIcon(new ImageIcon("/Users/edmarsalido/Documents/Images/exit.png"));
 		lblNewLabel_2_2.setBounds(10, 0, 64, 63);
 		panel_1_1_2.add(lblNewLabel_2_2);
 		
