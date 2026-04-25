@@ -1,4 +1,3 @@
-import java.awt.Image;
 import java.awt.EventQueue;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -34,6 +33,7 @@ import java.awt.Desktop;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -102,7 +102,7 @@ public class PrpertyManagementSystem {
 		frame.setUndecorated(true);
 		frame.setResizable(false);
 		frame.setSize(1428, 783);
-		frame.setLocationRelativeTo(null); // Center the frame
+		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -110,12 +110,35 @@ public class PrpertyManagementSystem {
 		tabbedPane.setBounds(365, -26, 1063, 809);
 		frame.getContentPane().add(tabbedPane);
 		
+		// ===== CREATE AND ADD ALL PANELS TO TABBEDPANE =====
+		
+		// Panel 1: Properties
 		JPanel propertiespanel = new JPanel();
 		propertiespanel.setBackground(new Color(0, 139, 139));
 		propertiespanel.setForeground(Color.WHITE);
-		tabbedPane.addTab("New tab", null, propertiespanel, null);
+		propertiespanel.setLayout(null);
+		tabbedPane.addTab("Properties", propertiespanel);
 		
-		// ===== FIXED BUTTONS WITH PROPER STYLING =====
+		// Panel 2: Tenants
+		JPanel Tenants = new JPanel();
+		Tenants.setBackground(new Color(0, 139, 139));
+		Tenants.setLayout(null);
+		tabbedPane.addTab("Tenants", Tenants);
+		
+		// Panel 3: Appointment
+		JPanel Appointment = new JPanel();
+		Appointment.setBackground(new Color(0, 139, 139));
+		Appointment.setLayout(null);
+		tabbedPane.addTab("Appointment", Appointment);
+		
+		// Panel 4: Comments
+		JPanel CommentPanel = new JPanel();
+		CommentPanel.setBackground(new Color(0, 139, 139));
+		CommentPanel.setLayout(null);
+		tabbedPane.addTab("Comments", CommentPanel);
+		
+		// ===== PROPERTIES PANEL COMPONENTS =====
+		
 		JButton btnNewButton = new JButton("LOAD");
 		btnNewButton.setBounds(52, 684, 89, 30);
 		btnNewButton.setForeground(Color.BLACK);
@@ -136,9 +159,9 @@ public class PrpertyManagementSystem {
 				} catch (Exception f) {
 					f.printStackTrace();
 				}
+				
 			}
 		});
-		propertiespanel.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(1, 126, 1060, 274);
@@ -202,7 +225,6 @@ public class PrpertyManagementSystem {
 		});
 		propertiespanel.add(btnNewButton_1_1);
 		
-		// Rest of your existing code for text fields and labels...
 		address = new JTextField();
 		address.setBounds(42, 601, 231, 30);
 		propertiespanel.add(address);
@@ -300,8 +322,506 @@ public class PrpertyManagementSystem {
 		lblNewLabel_5_1_2.setBounds(46, 427, 75, 14);
 		propertiespanel.add(lblNewLabel_5_1_2);
 		
-		// Continue with Tenants, Appointment, Comment panels (similar button fixes needed)
-		// For brevity, I'll show the key fix for sidepanel icons and buttons
+		// ===== TENANTS PANEL COMPONENTS =====
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(0, 117, 1070, 268);
+		Tenants.add(scrollPane_3);
+		
+		tenanttable = new JTable();
+		scrollPane_3.setViewportView(tenanttable);
+		
+		JPanel panel_3_1 = new JPanel();
+		panel_3_1.setBounds(0, 0, 1054, 127);
+		panel_3_1.setLayout(null);
+		panel_3_1.setBackground(new Color(0, 139, 139));
+		Tenants.add(panel_3_1);
+		
+		JLabel lblNewLabel_4_2_1 = new JLabel("Tenants");
+		lblNewLabel_4_2_1.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNewLabel_4_2_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_4_2_1.setForeground(Color.WHITE);
+		lblNewLabel_4_2_1.setFont(new Font("Bahnschrift", Font.BOLD, 26));
+		lblNewLabel_4_2_1.setBounds(382, 32, 359, 59);
+		panel_3_1.add(lblNewLabel_4_2_1);
+		
+		JButton btnNewButton_3_1 = new JButton("LOAD");
+		btnNewButton_3_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_3_1.setBounds(29, 670, 92, 30);
+		btnNewButton_3_1.setOpaque(true);
+		btnNewButton_3_1.setContentAreaFilled(true);
+		btnNewButton_3_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_3_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String load = "select * from tenant;";
+					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
+					ResultSet rs1 = pst.executeQuery();
+					tenanttable.setModel(DbUtils.resultSetToTableModel(rs1));
+					
+				} catch (Exception f) {
+					f.printStackTrace();
+				}
+			
+			}
+		});
+		btnNewButton_3_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton_3_1.setBackground(new Color(204, 255, 204));
+		Tenants.add(btnNewButton_3_1);
+		
+		JButton add2_1 = new JButton("ADD");
+		add2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		add2_1.setBounds(169, 670, 77, 30);
+		add2_1.setOpaque(true);
+		add2_1.setContentAreaFilled(true);
+		add2_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		add2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SaveToTenant();
+			}
+		});
+		add2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		add2_1.setBackground(new Color(204, 255, 204));
+		Tenants.add(add2_1);
+		
+		JButton btnNewButton_2_1_1 = new JButton("UPDATE");
+		btnNewButton_2_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_2_1_1.setBounds(307, 670, 81, 30);
+		btnNewButton_2_1_1.setOpaque(true);
+		btnNewButton_2_1_1.setContentAreaFilled(true);
+		btnNewButton_2_1_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_2_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UpdateTenant();
+			}
+		});
+		btnNewButton_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton_2_1_1.setBackground(new Color(204, 255, 204));
+		Tenants.add(btnNewButton_2_1_1);
+		
+		JButton btnNewButton_1_1_1_1 = new JButton("DELETE");
+		btnNewButton_1_1_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_1_1_1_1.setBounds(444, 670, 77, 30);
+		btnNewButton_1_1_1_1.setOpaque(true);
+		btnNewButton_1_1_1_1.setContentAreaFilled(true);
+		btnNewButton_1_1_1_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_1_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeleteTenant();
+			}
+		});
+		btnNewButton_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton_1_1_1_1.setBackground(new Color(204, 255, 204));
+		Tenants.add(btnNewButton_1_1_1_1);
+		
+		JLabel tenantNO = new JLabel("Tenant NO");
+		tenantNO.setBounds(29, 478, 114, 16);
+		tenantNO.setForeground(Color.WHITE);
+		tenantNO.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Tenants.add(tenantNO);
+		
+		tenantno = new JTextField();
+		tenantno.setBounds(29, 504, 246, 34);
+		tenantno.setColumns(10);
+		Tenants.add(tenantno);
+		
+		JLabel prent = new JLabel("Property Rent");
+		prent.setBounds(360, 478, 114, 16);
+		prent.setForeground(Color.WHITE);
+		prent.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Tenants.add(prent);
+		
+		Prent = new JTextField();
+		Prent.setBounds(360, 504, 246, 34);
+		Prent.setColumns(10);
+		Tenants.add(Prent);
+		
+		JLabel ownerID = new JLabel("Owner ID");
+		ownerID.setBounds(29, 565, 114, 16);
+		ownerID.setForeground(Color.WHITE);
+		ownerID.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Tenants.add(ownerID);
+		
+		ownerid = new JTextField();
+		ownerid.setBounds(29, 591, 246, 34);
+		ownerid.setColumns(10);
+		Tenants.add(ownerid);
+		
+		JLabel tenantname = new JLabel("Tenant Name");
+		tenantname.setBounds(360, 565, 114, 16);
+		tenantname.setForeground(Color.WHITE);
+		tenantname.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Tenants.add(tenantname);
+		
+		tenantName = new JTextField();
+		tenantName.setBounds(360, 591, 246, 34);
+		tenantName.setColumns(10);
+		Tenants.add(tenantName);
+		
+		JLabel enddate = new JLabel("End Date");
+		enddate.setBounds(692, 565, 114, 16);
+		enddate.setForeground(Color.WHITE);
+		enddate.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Tenants.add(enddate);
+		
+		endDate = new JTextField();
+		endDate.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				SaveToTenant();
+			}}
+		});
+		endDate.setBounds(692, 591, 246, 34);
+		endDate.setColumns(10);
+		Tenants.add(endDate);
+		
+		JLabel tenantID = new JLabel("Tenant ID");
+		tenantID.setBounds(28, 395, 114, 16);
+		tenantID.setForeground(Color.WHITE);
+		tenantID.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Tenants.add(tenantID);
+		
+		tenantid = new JTextField();
+		tenantid.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DELETE) {
+					DeleteTenant();
+			}
+			}
+		});
+		tenantid.setBounds(28, 421, 246, 34);
+		tenantid.setColumns(10);
+		Tenants.add(tenantid);
+		
+		JLabel startdate = new JLabel("Start Date");
+		startdate.setBounds(692, 478, 114, 16);
+		startdate.setForeground(Color.WHITE);
+		startdate.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Tenants.add(startdate);
+		
+		startDate = new JTextField();
+		startDate.setBounds(692, 504, 246, 34);
+		startDate.setColumns(10);
+		Tenants.add(startDate);
+		
+		// ===== APPOINTMENT PANEL COMPONENTS =====
+		
+		JButton btnNewButton_3 = new JButton("LOAD");
+		btnNewButton_3.setBounds(47, 686, 92, 30);
+		btnNewButton_3.setBackground(new Color(204, 255, 204));
+		btnNewButton_3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_3.setOpaque(true);
+		btnNewButton_3.setContentAreaFilled(true);
+		btnNewButton_3.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String load = "select * from appointment;";
+					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
+					ResultSet rs = pst.executeQuery();
+					table.setModel(DbUtils.resultSetToTableModel(rs));
+					
+				} catch (Exception f) {
+					f.printStackTrace();
+				}
+			}
+		});
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 128, 1058, 273);
+		scrollPane.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		scrollPane.setBackground(new Color(0, 255, 102));
+		scrollPane.setForeground(new Color(0, 204, 102));
+		scrollPane.setBorder(null);
+		Appointment.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(btnNewButton_3);
+		
+		JButton add2 = new JButton("ADD");
+		add2.setBounds(187, 686, 77, 30);
+		add2.setBackground(new Color(204, 255, 204));
+		add2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		add2.setOpaque(true);
+		add2.setContentAreaFilled(true);
+		add2.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		add2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SaveToAppointment();
+			}
+		});
+		add2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(add2);
+		
+		JButton btnNewButton_2_1 = new JButton("UPDATE");
+		btnNewButton_2_1.setBounds(325, 686, 81, 30);
+		btnNewButton_2_1.setBackground(new Color(204, 255, 204));
+		btnNewButton_2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_2_1.setOpaque(true);
+		btnNewButton_2_1.setContentAreaFilled(true);
+		btnNewButton_2_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UpdateAppointment();
+			}
+		});
+		btnNewButton_2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(btnNewButton_2_1);
+		
+		JButton btnNewButton_1_1_1 = new JButton("DELETE");
+		btnNewButton_1_1_1.setBounds(462, 686, 77, 30);
+		btnNewButton_1_1_1.setBackground(new Color(204, 255, 204));
+		btnNewButton_1_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_1_1_1.setOpaque(true);
+		btnNewButton_1_1_1.setContentAreaFilled(true);
+		btnNewButton_1_1_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeleteAppointment();
+			}
+		});
+		btnNewButton_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(btnNewButton_1_1_1);
+		
+		app_id = new JTextField();
+		app_id.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DELETE) {
+					DeleteAppointment();
+			}
+		}
+		});
+		app_id.setBounds(47, 471, 246, 34);
+		app_id.setColumns(10);
+		Appointment.add(app_id);
+		
+		JLabel lblNewLabel_5_2 = new JLabel("Appointment ID");
+		lblNewLabel_5_2.setBounds(47, 445, 114, 16);
+		lblNewLabel_5_2.setForeground(new Color(255, 255, 255));
+		lblNewLabel_5_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(lblNewLabel_5_2);
+		
+		JLabel lblNewLabel_5_1_1 = new JLabel("Client ID");
+		lblNewLabel_5_1_1.setBounds(336, 446, 58, 15);
+		lblNewLabel_5_1_1.setForeground(new Color(255, 255, 255));
+		lblNewLabel_5_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(lblNewLabel_5_1_1);
+		
+		JLabel lblNewLabel_5_3_1 = new JLabel("Date ");
+		lblNewLabel_5_3_1.setBounds(47, 528, 60, 15);
+		lblNewLabel_5_3_1.setForeground(new Color(255, 255, 255));
+		lblNewLabel_5_3_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(lblNewLabel_5_3_1);
+		
+		JLabel lblNewLabel_5_4_1 = new JLabel("Time");
+		lblNewLabel_5_4_1.setBounds(336, 528, 40, 15);
+		lblNewLabel_5_4_1.setForeground(new Color(255, 255, 255));
+		lblNewLabel_5_4_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(lblNewLabel_5_4_1);
+		
+		client_id = new JTextField();
+		client_id.setBounds(336, 471, 246, 34);
+		client_id.setColumns(10);
+		Appointment.add(client_id);
+		
+		date = new JTextField();
+		date.setBounds(47, 553, 246, 34);
+		date.setColumns(10);
+		Appointment.add(date);
+		
+		time = new JTextField();
+		time.setBounds(336, 553, 246, 34);
+		time.setColumns(10);
+		Appointment.add(time);
+		
+		p_id = new JTextField();
+		p_id.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				SaveToAppointment();
+			}}
+		});
+		p_id.setBounds(47, 633, 246, 34);
+		p_id.setColumns(10);
+		Appointment.add(p_id);
+		
+		JLabel lblNewLabel_5_4_1_1 = new JLabel("Property ID");
+		lblNewLabel_5_4_1_1.setBounds(47, 610, 107, 15);
+		lblNewLabel_5_4_1_1.setForeground(new Color(255, 255, 255));
+		lblNewLabel_5_4_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		Appointment.add(lblNewLabel_5_4_1_1);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
+		panel_2.setBackground(new Color(0, 139, 139));
+		panel_2.setBounds(4, 1, 1051, 127);
+		Appointment.add(panel_2);
+		
+		JLabel lblNewLabel_4_1 = new JLabel("Appointments");
+		lblNewLabel_4_1.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNewLabel_4_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_4_1.setForeground(Color.WHITE);
+		lblNewLabel_4_1.setFont(new Font("Bahnschrift", Font.BOLD, 26));
+		lblNewLabel_4_1.setBounds(382, 32, 359, 59);
+		panel_2.add(lblNewLabel_4_1);
+		
+		// ===== COMMENTS PANEL COMPONENTS =====
+		
+		JLabel clientID = new JLabel("Client ID");
+		clientID.setBounds(38, 490, 114, 16);
+		clientID.setForeground(new Color(255, 255, 255));
+		clientID.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(clientID);
+		
+		clientid = new JTextField();
+		clientid.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_DELETE) {
+					DeleteComment();
+			}
+			}
+		});
+		clientid.setBounds(38, 516, 246, 34);
+		clientid.setColumns(10);
+		CommentPanel.add(clientid);
+		
+		JLabel pID = new JLabel("Property ID");
+		pID.setBounds(369, 490, 114, 16);
+		pID.setForeground(new Color(255, 255, 255));
+		pID.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(pID);
+		
+		pid = new JTextField();
+		pid.setBounds(369, 516, 246, 34);
+		pid.setColumns(10);
+		CommentPanel.add(pid);
+		
+		JLabel Date = new JLabel("Date");
+		Date.setBounds(38, 577, 114, 16);
+		Date.setForeground(new Color(255, 255, 255));
+		Date.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(Date);
+		
+		datE = new JTextField();
+		datE.setBounds(38, 603, 246, 34);
+		datE.setColumns(10);
+		CommentPanel.add(datE);
+		
+		JLabel Comment = new JLabel("Comment");
+		Comment.setBounds(369, 577, 114, 16);
+		Comment.setForeground(new Color(255, 255, 255));
+		Comment.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(Comment);
+		
+		comment = new JTextField();
+		comment.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+				SaveToComment();
+			}}
+		});
+		comment.setBounds(369, 603, 246, 34);
+		comment.setColumns(10);
+		CommentPanel.add(comment);
+		
+		JButton btnNewButton_4 = new JButton("LOAD");
+		btnNewButton_4.setBounds(57, 681, 89, 30);
+		btnNewButton_4.setBackground(new Color(204, 255, 204));
+		btnNewButton_4.setOpaque(true);
+		btnNewButton_4.setContentAreaFilled(true);
+		btnNewButton_4.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String load = "select * from comments;";
+					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
+					ResultSet rs1 = pst.executeQuery();
+					table_1.setModel(DbUtils.resultSetToTableModel(rs1));
+					
+				} catch (Exception f) {
+					f.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_4.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(btnNewButton_4);
+		
+		JButton btnNewButton_1_2 = new JButton("ADD");
+		btnNewButton_1_2.setBounds(185, 681, 89, 30);
+		btnNewButton_1_2.setBackground(new Color(204, 255, 204));
+		btnNewButton_1_2.setOpaque(true);
+		btnNewButton_1_2.setContentAreaFilled(true);
+		btnNewButton_1_2.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SaveToComment();
+			}
+		});
+		btnNewButton_1_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_1_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(btnNewButton_1_2);
+		
+		JButton btnNewButton_2_2 = new JButton("UPDATE");
+		btnNewButton_2_2.setBounds(332, 681, 89, 30);
+		btnNewButton_2_2.setBackground(new Color(204, 255, 204));
+		btnNewButton_2_2.setOpaque(true);
+		btnNewButton_2_2.setContentAreaFilled(true);
+		btnNewButton_2_2.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_2_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UpdateComment();
+			}
+		});
+		btnNewButton_2_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_2_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(btnNewButton_2_2);
+		
+		JButton btnNewButton_1_1_2 = new JButton("DELETE");
+		btnNewButton_1_1_2.setBounds(474, 681, 89, 30);
+		btnNewButton_1_1_2.setBackground(new Color(204, 255, 204));
+		btnNewButton_1_1_2.setOpaque(true);
+		btnNewButton_1_1_2.setContentAreaFilled(true);
+		btnNewButton_1_1_2.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
+		btnNewButton_1_1_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DeleteComment();
+				}
+		});
+		btnNewButton_1_1_2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnNewButton_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CommentPanel.add(btnNewButton_1_1_2);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBackground(new Color(0, 139, 139));
+		panel_3.setBounds(0, 0, 1055, 127);
+		CommentPanel.add(panel_3);
+		
+		JLabel lblNewLabel_4_2 = new JLabel("Comments");
+		lblNewLabel_4_2.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNewLabel_4_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_4_2.setForeground(Color.WHITE);
+		lblNewLabel_4_2.setFont(new Font("Bahnschrift", Font.BOLD, 26));
+		lblNewLabel_4_2.setBounds(382, 32, 359, 59);
+		panel_3.add(lblNewLabel_4_2);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(0, 118, 1058, 299);
+		CommentPanel.add(scrollPane_2);
+		
+		table_1 = new JTable();
+		scrollPane_2.setViewportView(table_1);
+		
+		// ===== SIDEPANEL =====
 		
 		Panel sidepanel = new Panel();
 		sidepanel.setBounds(0, 0, 372, 783);
@@ -310,8 +830,6 @@ public class PrpertyManagementSystem {
 		sidepanel.setBackground(new Color(95, 158, 160));
 		sidepanel.setForeground(new Color(204, 51, 102));
 		sidepanel.setLayout(null);
-		
-		// ===== FIXED SIDEPANEL BUTTONS WITH PROPER ICON SIZING =====
 		
 		// Properties Button
 		JButton btnProperties = new JButton("Properties");
@@ -325,7 +843,6 @@ public class PrpertyManagementSystem {
 		btnProperties.setOpaque(true);
 		btnProperties.setContentAreaFilled(true);
 		btnProperties.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
-		// Resize icon
 		ImageIcon propIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/properties.png");
 		Image scaledProp = propIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
 		btnProperties.setIcon(new ImageIcon(scaledProp));
@@ -358,7 +875,7 @@ public class PrpertyManagementSystem {
 		btnTenants.setOpaque(true);
 		btnTenants.setContentAreaFilled(true);
 		btnTenants.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
-		ImageIcon tenantIcon = new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-person-at-home-60.png");
+		ImageIcon tenantIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/tenants.png");
 		Image scaledTenant = tenantIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
 		btnTenants.setIcon(new ImageIcon(scaledTenant));
 		btnTenants.addActionListener(new ActionListener() {
@@ -454,7 +971,7 @@ public class PrpertyManagementSystem {
 		btnLogout.setOpaque(true);
 		btnLogout.setContentAreaFilled(true);
 		btnLogout.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
-		ImageIcon logoutIcon = new ImageIcon("C:\\Users\\EURO COMPUTERS\\Downloads\\icons8-logout-rounded-down-64.png");
+		ImageIcon logoutIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/logout.png");
 		Image scaledLogout = logoutIcon.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
 		btnLogout.setIcon(new ImageIcon(scaledLogout));
 		btnLogout.addActionListener(new ActionListener() {
@@ -534,8 +1051,8 @@ public class PrpertyManagementSystem {
 		sidepanel.add(lblLogo);
 	}
 	
-	// Keep all your existing SaveToTenant, UpdateTenant, DeleteTenant, etc. methods here
-	// ... (rest of your methods remain the same)
+	// ===== ALL YOUR EXISTING METHODS GO HERE =====
+	// Keep all your existing database methods unchanged (SaveToTenant, UpdateTenant, etc.)
 	
 	private void SaveToTenant() {
 		connection = DBconnection.getConnection();
