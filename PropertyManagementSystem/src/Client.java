@@ -98,7 +98,7 @@ public class Client {
 		frame.setResizable(false);
 		frame.setLocationByPlatform(true);
 		frame.setSize(1428, 783);
-        frame.setLocationRelativeTo(null);
+                frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
