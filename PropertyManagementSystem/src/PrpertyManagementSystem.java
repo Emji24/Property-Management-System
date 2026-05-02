@@ -151,13 +151,11 @@ public class PrpertyManagementSystem {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String load = "select * from property;";
-					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
-					ResultSet rs1 = pst.executeQuery();
-					propertytable.setModel(DbUtils.resultSetToTableModel(rs1));
+					propertytable.setModel(ApiClient.getPropertiesTableModel());
 					
 				} catch (Exception f) {
 					f.printStackTrace();
+                                        JOptionPane.showMessageDialog(null, "Failed to load properties from API: " + f.getMessage());
 				}
 				
 			}
@@ -354,13 +352,11 @@ public class PrpertyManagementSystem {
 		btnNewButton_3_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String load = "select * from tenant;";
-					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
-					ResultSet rs1 = pst.executeQuery();
-					tenanttable.setModel(DbUtils.resultSetToTableModel(rs1));
+					tenanttable.setModel(ApiClient.getTenantsTableModel());
 					
 				} catch (Exception f) {
 					f.printStackTrace();
+                                        JOptionPane.showMessageDialog(null, "Failed to load tenants from API: " + f.getMessage());
 				}
 			
 			}
@@ -1055,66 +1051,37 @@ public class PrpertyManagementSystem {
 	// Keep all your existing database methods unchanged (SaveToTenant, UpdateTenant, etc.)
 	
 	private void SaveToTenant() {
-		connection = DBconnection.getConnection();
-		try {
-			String query = "insert into tenant  values (?,?,?,?,?,?,?);";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(query);
-			ps.setNString(1, tenantid.getText());
-			ps.setNString(2, tenantno.getText());
-			ps.setNString(3, ownerid.getText());
-			ps.setNString(4, Prent.getText());		
-			ps.setNString(5, startDate.getText());
-			ps.setNString(6, endDate.getText());
-			ps.setNString(7, tenantName.getText());
-			
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Saved");
-		}
-		catch (SQLException e) {
-			if(e.getErrorCode() == 1062 )
-				JOptionPane.showMessageDialog(null, "Duplicate Entry");
-				e.printStackTrace();
-			}
-	}
+            try {
+                ApiClient.addTenant(tenantno.getText(), ownerid.getText(), Prent.getText(), startDate.getText(), endDate.getText(), tenantName.getText());
+                tenanttable.setModel(ApiClient.getTenantsTableModel());
+                JOptionPane.showMessageDialog(null, "Tenant saved through API");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 	
 	private void UpdateTenant() {
-		connection = DBconnection.getConnection();
-		try {
-			String update = "update propertymanagementsystem.tenant set tenant_no = ?, owner_id = ?, property_rent = ?, start_date = ?, end_date = ?, tenant_name = ? where tenant_id = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(update);
-			ps.setNString(7, tenantid.getText());
-			ps.setNString(1, tenantno.getText());
-			ps.setNString(2, ownerid.getText());
-			ps.setNString(3, Prent.getText());		
-			ps.setNString(4, startDate.getText());
-			ps.setNString(5, endDate.getText());
-			ps.setNString(6, tenantName.getText());
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Record Updated");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-	}
+            try {
+                    ApiClient.updateTenant(tenantid.getText(), tenantno.getText(), ownerid.getText(), Prent.getText(), startDate.getText(), endDate.getText(), tenantName.getText());
+                    tenanttable.setModel(ApiClient.getTenantsTableModel());
+                    JOptionPane.showMessageDialog(null, "Tenant updated through API");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
 	
 	private void DeleteTenant() {
-		connection = DBconnection.getConnection();
-		try {
-			String Delete = "delete from propertymanagementsystem.tenant where tenant_id = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(Delete);
-			ps.setString(1, tenantid.getText());
-			ps.execute();
-			JOptionPane.showMessageDialog(null, "Record Deleted!");
-		}
-		catch (Exception O) {
-			if(tenantid.getText().equals(null))
-			JOptionPane.showMessageDialog(null, "Enter Tenant ID");
-			O.printStackTrace();
-		}
-	}
+            try {
+                    ApiClient.deleteTenant(tenantid.getText());
+                    tenanttable.setModel(ApiClient.getTenantsTableModel());
+                    JOptionPane.showMessageDialog(null, "Tenant deleted through API");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
 	
 	private void SaveToComment() {
 		connection = DBconnection.getConnection();
@@ -1233,65 +1200,37 @@ public class PrpertyManagementSystem {
 	}
 	
 	private void SaveToDatabase() {
-		connection = DBconnection.getConnection();
-		try {
-			String query = "insert into property values (?,?,?,?,?,?)";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(query);
-			ps.setNString(1, propertyID.getText());
-			ps.setNString(2, address.getText());
-			ps.setNString(4, owner_id.getText());
-			ps.setNString(6, rooms.getText());
-			ps.setNString(5, p_type.getText());
-			ps.setNString(3, owner_no.getText());
-		
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Saved");
-		}
-		catch (SQLException e) {
-			if(e.getErrorCode() == 1062 )
-				JOptionPane.showMessageDialog(null, "Duplicate Entry");
-			e.printStackTrace();
-			}
-	}
+            try {
+                ApiClient.addProperty(propertyID.getText(), address.getText(), owner_no.getText(), owner_id.getText(), p_type.getText(), rooms.getText(), Prent.getText());
+                propertytable.setModel(ApiClient.getPropertiesTableModel());
+                JOptionPane.showMessageDialog(null, "Saved to House Rental database through API");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 	
 	private void UpdateDatabase() {
-		connection = DBconnection.getConnection();
-		try {
-			String update = "update propertymanagementsystem.property set address = ?, rooms = ?, p_type = ?, owner_no = ? where owner_ID = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(update);
-			ps.setString(5, owner_id.getText());
-			ps.setNString(1, address.getText());
-			ps.setNString(2, rooms.getText());
-			ps.setNString(3, p_type.getText());
-			ps.setNString(4, owner_no.getText());
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Record Updated");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-	}
+            try {
+                ApiClient.updateProperty(propertyID.getText(), propertyID.getText(), address.getText(), owner_no.getText(), owner_id.getText(), p_type.getText(), rooms.getText(), Prent.getText());
+                propertytable.setModel(ApiClient.getPropertiesTableModel());
+                JOptionPane.showMessageDialog(null, "Property updated through API");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 	
 	private void DeleteDatabase() {
-		connection = DBconnection.getConnection();
-		try {
-			String Delete = "delete from propertymanagementsystem.property where property_id = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(Delete);
-			ps.setString(1, propertyID.getText());
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Record Deleted!");
-		}
-		catch (Exception O) {
-			if(propertyID.getText().equals(null)) {
-			JOptionPane.showMessageDialog(null, "Enter Property ID");
-			O.printStackTrace();
-			}
-		}
-	}
+            try {
+                ApiClient.deleteProperty(propertyID.getText());
+                propertytable.setModel(ApiClient.getPropertiesTableModel());
+                JOptionPane.showMessageDialog(null, "Property deleted through API");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 	
 	public void setVisible(boolean b) {
 		frame.setVisible(true);

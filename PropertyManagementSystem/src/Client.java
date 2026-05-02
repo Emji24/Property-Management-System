@@ -32,7 +32,6 @@ import javax.swing.border.CompoundBorder;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import StartPanel;
 
 public class Client {
 	

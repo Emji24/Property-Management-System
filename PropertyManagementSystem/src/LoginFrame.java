@@ -122,17 +122,19 @@ public class LoginFrame extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/propertymanagementsystem","root","");
+					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3307/propertymanagementsystem","root","");
 					String username = user.getText();
 					String password = pass.getText();
 					Statement stm = con.createStatement();
 					String sql = "select * from users where username='"+username+"'and Password='"+password+"'";
 					ResultSet rs = stm.executeQuery(sql);
 					if(rs.next()) {
-						PrpertyManagementSystem pms = new PrpertyManagementSystem();
-						pms.setVisible(true);
-						dispose();
-					}
+                                            ApiClient.login(user.getText(), pass.getText());
+
+                                            PrpertyManagementSystem pms = new PrpertyManagementSystem();
+                                            pms.setVisible(true);
+                                            dispose();
+                                        }   
 					else {
 						JOptionPane.showMessageDialog(null, "Incorrect Username or Password");
 						user.setText("");
@@ -173,17 +175,19 @@ public class LoginFrame extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()== KeyEvent.VK_ENTER) {
 					try {
-						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/propertymanagementsystem","root","");
+						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3307/propertymanagementsystem","root","");
 						String username = user.getText();
 						String password = pass.getText();
 						Statement stm = con.createStatement();
 						String sql = "select * from users where username='"+username+"'and Password='"+password+"'";
 						ResultSet rs = stm.executeQuery(sql);
 						if(rs.next()) {
-							PrpertyManagementSystem pms = new PrpertyManagementSystem();
-							pms.setVisible(true);
-							dispose();
-						}
+                                                    ApiClient.login(user.getText(), pass.getText());
+
+                                                    PrpertyManagementSystem pms = new PrpertyManagementSystem();
+                                                    pms.setVisible(true);
+                                                    dispose();
+                                                }
 						else {
 							JOptionPane.showMessageDialog(null, "Incorrect Username or Password");
 							user.setText("");
