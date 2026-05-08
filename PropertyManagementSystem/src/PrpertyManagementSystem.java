@@ -36,6 +36,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class PrpertyManagementSystem {
 	
@@ -45,7 +47,8 @@ public class PrpertyManagementSystem {
 	private JTextField owner_id;
 	private JTextField owner_no;
 	private JTextField rooms;
-	private JTextField p_type;
+	private JComboBox<String> p_type;
+        private JTextField propertyRent;
 	private JTextField app_id;
 	private JTextField client_id;
 	private JTextField date;
@@ -251,10 +254,26 @@ public class PrpertyManagementSystem {
 		rooms.setColumns(10);
 		propertiespanel.add(rooms);
 		
-		p_type = new JTextField();
-		p_type.setBounds(321, 525, 231, 30);
-		p_type.setColumns(10);
-		propertiespanel.add(p_type);
+		p_type = new JComboBox<String>();
+                p_type.setBounds(321, 525, 231, 30);
+                propertiespanel.add(p_type);
+
+                try {
+                        p_type.setModel(ApiClient.getCategoriesComboBoxModel());
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Failed to load categories: " + ex.getMessage());
+                    }
+                
+                propertyRent = new JTextField();
+                propertyRent.setBounds(600, 452, 231, 30);
+                propertyRent.setColumns(10);
+                propertiespanel.add(propertyRent);
+
+                JLabel lblPropertyRent = new JLabel("Property Rent");
+                lblPropertyRent.setBounds(604, 427, 120, 14);
+                lblPropertyRent.setForeground(Color.WHITE);
+                lblPropertyRent.setFont(new Font("Tahoma", Font.BOLD, 12));
+                propertiespanel.add(lblPropertyRent);
 		
 		JLabel lblNewLabel_5 = new JLabel("Address");
 		lblNewLabel_5.setBounds(48, 581, 75, 14);
@@ -1200,10 +1219,20 @@ public class PrpertyManagementSystem {
 	}
 	
 	private void SaveToDatabase() {
-            try {
-                ApiClient.addProperty(propertyID.getText(), address.getText(), owner_no.getText(), owner_id.getText(), p_type.getText(), rooms.getText(), Prent.getText());
+          try {
+                ApiClient.addProperty(
+                propertyID.getText(),
+                address.getText(),
+                owner_no.getText(),
+                owner_id.getText(),
+                p_type.getSelectedItem().toString(),
+                rooms.getText(),
+                propertyRent.getText()
+                );
+
                 propertytable.setModel(ApiClient.getPropertiesTableModel());
-                JOptionPane.showMessageDialog(null, "Saved to House Rental database through API");
+                JOptionPane.showMessageDialog(null, "Property saved through API");
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
                 e.printStackTrace();
@@ -1212,9 +1241,20 @@ public class PrpertyManagementSystem {
 	
 	private void UpdateDatabase() {
             try {
-                ApiClient.updateProperty(propertyID.getText(), propertyID.getText(), address.getText(), owner_no.getText(), owner_id.getText(), p_type.getText(), rooms.getText(), Prent.getText());
+                ApiClient.updateProperty(
+                propertyID.getText(),
+                propertyID.getText(),
+                address.getText(),
+                owner_no.getText(),
+                owner_id.getText(),
+                p_type.getSelectedItem().toString(),
+                rooms.getText(),
+                propertyRent.getText()
+                );
+
                 propertytable.setModel(ApiClient.getPropertiesTableModel());
                 JOptionPane.showMessageDialog(null, "Property updated through API");
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "API Error: " + e.getMessage());
                 e.printStackTrace();

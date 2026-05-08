@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import javax.swing.DefaultComboBoxModel;
 
 public class ApiClient {
     private static final String BASE_URL = "http://localhost:3000/api";
@@ -28,6 +29,23 @@ public class ApiClient {
         String[] columns = {"tenant_id", "tenant_no", "owner_id", "property_rent", "start_date", "end_date", "tenant_name", "property_id", "house_no"};
         return toTableModel(request("GET", "/desktop/tenants", null), columns);
     }
+    
+    public static DefaultComboBoxModel<String> getCategoriesComboBoxModel() throws Exception {
+    String response = request("GET", "/desktop/categories", null);
+    ensureSuccess(response);
+
+    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+    List<Map<String, String>> rows = parseDataObjects(response);
+
+    for (Map<String, String> row : rows) {
+        String name = row.getOrDefault("name", "");
+        if (!name.trim().isEmpty()) {
+            model.addElement(name);
+        }
+    }
+
+    return model;
+}
 
     public static void addProperty(String propertyId, String address, String ownerNo, String ownerId, String propertyType, String rooms, String rent) throws Exception {
         String body = propertyJson(propertyId, address, ownerNo, ownerId, propertyType, rooms, rent);
