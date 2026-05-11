@@ -8,16 +8,74 @@ import javax.swing.DefaultComboBoxModel;
 public class ApiClient {
     private static final String BASE_URL = "http://localhost:3000/api";
     private static String token = "";
+    private static int userType = 0;
+    private static String loggedInName = "";
+    private static String loggedInUsername = "";
 
     public static boolean login(String username, String password) throws Exception {
         String body = "{\"username\":\"" + esc(username) + "\",\"password\":\"" + esc(password) + "\"}";
         String response = request("POST", "/auth/login", body);
+
         String extractedToken = extractValue(response, "token");
+
         if (extractedToken != null && !extractedToken.isEmpty()) {
-            token = extractedToken;
+        token = extractedToken;
+
+        String typeValue = extractUserField(response, "type");
+        String nameValue = extractUserField(response, "name");
+        String usernameValue = extractUserField(response, "username");
+
+        try {
+            userType = Integer.parseInt(typeValue);
+        } catch (Exception e) {
+            userType = 0;
+         }
+
+            loggedInName = nameValue == null ? "" : nameValue;
+            loggedInUsername = usernameValue == null ? "" : usernameValue;
+
             return true;
         }
+
         throw new Exception(response);
+    }
+    
+    private static String extractUserField(String json, String key) {
+        int userIndex = json.indexOf("\"user\":");
+        if (userIndex < 0) return null;
+
+        int objStart = json.indexOf('{', userIndex);
+        int objEnd = findMatching(json, objStart, '{', '}');
+
+        if (objStart < 0 || objEnd < 0) return null;
+
+        String userObject = json.substring(objStart + 1, objEnd);
+        Map<String, String> userMap = parseObject(userObject);
+
+        return userMap.get(key);
+    }
+    
+    public static int getUserType() {
+        return userType;
+    }
+
+    public static String getLoggedInName() {
+        return loggedInName;
+    }
+
+    public static String getLoggedInUsername() {
+        return loggedInUsername;
+    }
+
+    public static boolean isLoggedIn() {
+        return token != null && !token.isEmpty();
+    }
+
+    public static void logout() {
+        token = "";
+        userType = 0;
+        loggedInName = "";
+        loggedInUsername = "";
     }
 
     public static DefaultTableModel getPropertiesTableModel() throws Exception {

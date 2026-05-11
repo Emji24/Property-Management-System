@@ -20,7 +20,6 @@ import javax.swing.SwingConstants;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
 
 public class LoginFrame extends JFrame {
@@ -182,20 +181,35 @@ public class LoginFrame extends JFrame {
             try {
                 boolean loggedIn = ApiClient.login(username, password);
 
-                if (loggedIn) {
-                    JOptionPane.showMessageDialog(this, "Login successful!");
+            if (loggedIn) {
+                JOptionPane.showMessageDialog(this, "Login successful!");
 
-                    PrpertyManagementSystem pms = new PrpertyManagementSystem();
-                    pms.setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Incorrect Username or Password");
-                    user.setText("");
-                    pass.setText("");
-                }
+                int userType = ApiClient.getUserType();
 
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "API connection error: " + ex.getMessage());
-                }
-            }   
+                if (userType == 1) {
+                // Admin dashboard
+                PrpertyManagementSystem pms = new PrpertyManagementSystem();
+                pms.setVisible(true);
+                dispose();
+
+            } else if (userType == 2) {
+                // Client dashboard
+                Client clientDashboard = new Client();
+                clientDashboard.setVisible(true);
+                dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Unknown user type. Please contact the administrator.");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Incorrect Username or Password");
+            user.setText("");
+            pass.setText("");
+        }
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "API connection error: " + ex.getMessage());
+    }
+   }
 }
