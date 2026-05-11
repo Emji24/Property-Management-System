@@ -2,7 +2,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.BorderFactory;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -16,13 +15,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.awt.Cursor;
 import javax.swing.SwingConstants;
 import java.awt.Image;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.BorderFactory;
@@ -120,32 +115,10 @@ public class LoginFrame extends JFrame {
 		
 		});
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3307/propertymanagementsystem","root","");
-					String username = user.getText();
-					String password = pass.getText();
-					Statement stm = con.createStatement();
-					String sql = "select * from users where username='"+username+"'and Password='"+password+"'";
-					ResultSet rs = stm.executeQuery(sql);
-					if(rs.next()) {
-                                            ApiClient.login(user.getText(), pass.getText());
-
-                                            PrpertyManagementSystem pms = new PrpertyManagementSystem();
-                                            pms.setVisible(true);
-                                            dispose();
-                                        }   
-					else {
-						JOptionPane.showMessageDialog(null, "Incorrect Username or Password");
-						user.setText("");
-						pass.setText("");
-					}
-					con.close();
-				} catch (Exception g) {
-					JOptionPane.showMessageDialog(null, g);
-				}
-			}
-		});
+                    public void actionPerformed(ActionEvent e) {
+                        loginUser();
+                    }
+                });
 		btnNewButton.setBackground(new Color(0, 139, 139));
 		btnNewButton.setForeground(new Color(255, 245, 238));
 		btnNewButton.setFont(new Font("Segoe UI", Font.BOLD, 17));
@@ -173,31 +146,10 @@ public class LoginFrame extends JFrame {
 		pass = new JTextField();
 		pass.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()== KeyEvent.VK_ENTER) {
-					try {
-						Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3307/propertymanagementsystem","root","");
-						String username = user.getText();
-						String password = pass.getText();
-						Statement stm = con.createStatement();
-						String sql = "select * from users where username='"+username+"'and Password='"+password+"'";
-						ResultSet rs = stm.executeQuery(sql);
-						if(rs.next()) {
-                                                    ApiClient.login(user.getText(), pass.getText());
-
-                                                    PrpertyManagementSystem pms = new PrpertyManagementSystem();
-                                                    pms.setVisible(true);
-                                                    dispose();
-                                                }
-						else {
-							JOptionPane.showMessageDialog(null, "Incorrect Username or Password");
-							user.setText("");
-							pass.setText("");
-						}
-						con.close();
-					} catch (Exception g) {
-						JOptionPane.showMessageDialog(null, g);
-					}
-				}
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                                    loginUser();
+                                }
+                        
 			}
 		});
 		pass.setForeground(new Color(255, 248, 220));
@@ -217,4 +169,33 @@ public class LoginFrame extends JFrame {
 		user.setColumns(10);
 		backgroundLabel.add(user);
 	}
+        
+        private void loginUser() {
+            String username = user.getText().trim();
+            String password = pass.getText().trim();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter username and password.");
+                return;
+            }
+
+            try {
+                boolean loggedIn = ApiClient.login(username, password);
+
+                if (loggedIn) {
+                    JOptionPane.showMessageDialog(this, "Login successful!");
+
+                    PrpertyManagementSystem pms = new PrpertyManagementSystem();
+                    pms.setVisible(true);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect Username or Password");
+                    user.setText("");
+                    pass.setText("");
+                }
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "API connection error: " + ex.getMessage());
+                }
+            }   
 }

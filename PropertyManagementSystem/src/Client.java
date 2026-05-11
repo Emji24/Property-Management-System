@@ -1,10 +1,6 @@
 import java.awt.Image;
 import java.awt.EventQueue;
-import java.sql.PreparedStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
 
-import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Font;
@@ -20,7 +16,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
-import net.proteanit.sql.DbUtils;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -35,10 +30,10 @@ import java.awt.event.KeyEvent;
 
 public class Client {
 	
-	String username = "root";
-	String password = "";
-	Statement mystatobj = null;
-	Connection con= null;
+	//String username = "root";
+	//String password = "";
+	//Statement mystatobj = null;
+	//Connection con= null;
 	
 	private JFrame frame;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -50,19 +45,7 @@ public class Client {
 	private JTable propertytable;
 	private JTable table;
 	
-	public static void main(String[] args) {
-		Statement mystatObj = null;
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Client window = new Client();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 	
 	/**
 	 * Create the application.
@@ -74,7 +57,7 @@ public class Client {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	Connection connection = null;
+	//Connection connection = null;
 	private JTextField clientid;
 	private JTextField pid;
 	private JTextField datE;
@@ -91,7 +74,7 @@ public class Client {
 	
 	private void initialize() {
 		
-		connection = DBconnection.getConnection();
+		//connection = DBconnection.getConnection();
 		frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.setResizable(false);
@@ -122,14 +105,11 @@ public class Client {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String load = "select * from property;";
-					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
-					ResultSet rs1 = pst.executeQuery();
-					propertytable.setModel(DbUtils.resultSetToTableModel(rs1));
-					
-				} catch (Exception f) {
-					f.printStackTrace();
-				}
+                                        propertytable.setModel(ApiClient.getPropertiesTableModel());
+                                    } catch (Exception f) {
+                                        JOptionPane.showMessageDialog(null, "API error while loading properties: " + f.getMessage());
+                                        f.printStackTrace();
+                                    }
 				
 			}
 		});
@@ -198,14 +178,11 @@ public class Client {
 		btnNewButton_3_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String load = "select * from tenant;";
-					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
-					ResultSet rs1 = pst.executeQuery();
-					tenanttable.setModel(DbUtils.resultSetToTableModel(rs1));
-					
-				} catch (Exception f) {
-					f.printStackTrace();
-				}
+                                        tenanttable.setModel(ApiClient.getTenantsTableModel());
+                                    } catch (Exception f) {
+                                        JOptionPane.showMessageDialog(null, "API error while loading tenants: " + f.getMessage());
+                                        f.printStackTrace();
+                                    }
 			
 			}
 		});
@@ -357,18 +334,10 @@ public class Client {
 		btnNewButton_3.setOpaque(true);
 		btnNewButton_3.setContentAreaFilled(true);
 		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					String load = "select * from appointment;";
-					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
-					ResultSet rs = pst.executeQuery();
-					table.setModel(DbUtils.resultSetToTableModel(rs));
-					
-				} catch (Exception f) {
-					f.printStackTrace();
-				}
-			}
-		});
+                    public void actionPerformed(ActionEvent e) {
+                            JOptionPane.showMessageDialog(null, "Appointment API is not yet connected.");
+                    }
+                });
 		Appointment.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -567,18 +536,11 @@ public class Client {
 		btnNewButton_4.setOpaque(true);
 		btnNewButton_4.setContentAreaFilled(true);
 		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					String load = "select * from comments;";
-					PreparedStatement pst = DBconnection.getConnection().prepareStatement(load);
-					ResultSet rs1 = pst.executeQuery();
-					table_1.setModel(DbUtils.resultSetToTableModel(rs1));
-					
-				} catch (Exception f) {
-					f.printStackTrace();
-				}
-			}
-		});
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog(null, "Comments API is not yet connected.");
+                    }
+                });
+	
 		btnNewButton_4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton_4.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton_4.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
@@ -856,182 +818,82 @@ public class Client {
 	}
 	
 	private void SaveToTenant() {
-		connection = DBconnection.getConnection();
-		try {
-			String query = "insert into tenant  values (?,?,?,?,?,?,?);";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(query);
-			ps.setNString(1, tenantid.getText());
-			ps.setNString(2, tenantno.getText());
-			ps.setNString(3, ownerid.getText());
-			ps.setNString(4, Prent.getText());		
-			ps.setNString(5, startDate.getText());
-			ps.setNString(6, endDate.getText());
-			ps.setNString(7, tenantName.getText());
-			
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Saved");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-		
-	}
+            try {
+                ApiClient.addTenant(
+                tenantno.getText().trim(),
+                ownerid.getText().trim(),
+                Prent.getText().trim().replace(",", ""),
+                startDate.getText().trim(),
+                endDate.getText().trim(),
+                tenantName.getText().trim()
+                );
+
+                JOptionPane.showMessageDialog(null, "Tenant saved successfully.");
+                tenanttable.setModel(ApiClient.getTenantsTableModel());
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "API error while saving tenant: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 	
 	private void UpdateTenant() {
-		connection = DBconnection.getConnection();
-		try {
-			String update = "update propertymanagementsystem.tenant set tenant_no = ?, owner_id = ?, property_rent = ?, start_date = ?, end_date = ?, tenant_name = ? where tenant_id = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(update);
-			ps.setNString(7, tenantid.getText());
-			ps.setNString(1, tenantno.getText());
-			ps.setNString(2, ownerid.getText());
-			ps.setNString(3, Prent.getText());		
-			ps.setNString(4, startDate.getText());
-			ps.setNString(5, endDate.getText());
-			ps.setNString(6, tenantName.getText());
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Record Updated");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-		
-	}
+            try {
+                ApiClient.updateTenant(
+                tenantid.getText().trim(),
+                tenantno.getText().trim(),
+                ownerid.getText().trim(),
+                Prent.getText().trim().replace(",", ""),
+                startDate.getText().trim(),
+                endDate.getText().trim(),
+                tenantName.getText().trim()
+                );
+
+                JOptionPane.showMessageDialog(null, "Tenant updated successfully.");
+                tenanttable.setModel(ApiClient.getTenantsTableModel());
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "API error while updating tenant: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 	
 	private void DeleteTenant() {
-		connection = DBconnection.getConnection();
-		try {
-			String Delete = "delete from propertymanagementsystem.tenant where tenant_id = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(Delete);
-			ps.setString(1, tenantid.getText());
-			ps.execute();
-			JOptionPane.showMessageDialog(null, "Record Deleted!");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-	}
+            try {
+                ApiClient.deleteTenant(tenantid.getText().trim());
+
+                JOptionPane.showMessageDialog(null, "Tenant deleted successfully.");
+                tenanttable.setModel(ApiClient.getTenantsTableModel());
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "API error while deleting tenant: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 	
 	private void SaveToComment() {
-		connection = DBconnection.getConnection();
-		try {
-			String query = "insert into comments  values (?,?,?,?);";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(query);
-			ps.setNString(1, clientid.getText());
-			ps.setNString(2, pid.getText());
-			ps.setNString(3, datE.getText());
-			ps.setNString(4, comment.getText());		
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Saved");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-		
-	}
-	
-	private void UpdateComment() {
-		connection = DBconnection.getConnection();
-		try {
-			String update = "update propertymanagementsystem.comments set p_id = ?, date = ?, comment = ? where clientid = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(update);
-			ps.setString(4, clientid.getText());
-			ps.setNString(1, p_id.getText());
-			ps.setNString(2, date.getText());
-			ps.setNString(3, comment.getText());
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Record Updated");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-		
-	}
-	
-	private void DeleteComment() {
-		connection = DBconnection.getConnection();
-		try {
-			String Delete = "delete from propertymanagementsystem.comments where clientid = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(Delete);
-			ps.setString(1, clientid.getText());
-			ps.execute();
-			JOptionPane.showMessageDialog(null, "Record Deleted!");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-	}
+            JOptionPane.showMessageDialog(null, "Comments API is not yet connected.");
+        }
+
+        private void UpdateComment() {
+            JOptionPane.showMessageDialog(null, "Comments API is not yet connected.");
+        }
+
+        private void DeleteComment() {
+            JOptionPane.showMessageDialog(null, "Comments API is not yet connected.");
+        }
 	
 	private void SaveToAppointment() {
-		connection = DBconnection.getConnection();
-		try {
-			String query = "insert into appointment values (?,?,?,?,?)";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(query);
-			ps.setNString(1, app_id.getText());
-			ps.setNString(2, date.getText());
-			ps.setNString(3, time.getText());
-			ps.setNString(4, client_id.getText());
-			ps.setNString(5, p_id.getText());
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Saved");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-		
-	}
-	
-	private void UpdateAppointment() {
-		connection = DBconnection.getConnection();
-		try {
-			String update = "update propertymanagementsystem.appointment set date = ?, time = ?, client_id = ?, p_id = ? where Appointment_id = ?";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(update);
-			ps.setNString(1, date.getText());
-			ps.setNString(2, time.getText());
-			ps.setNString(3, client_id.getText());
-			ps.setNString(4, p_id.getText());
-			ps.setString(5, app_id.getText());
-		
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Record Updated");
-		}
-		catch (Exception O) {
-			if(app_id == null) {
-				JOptionPane.showMessageDialog(null,  "Enter Appointment ID");
-			}
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-	}
-	
-	private void DeleteAppointment() {
-		connection = DBconnection.getConnection();
-		try {
-			String Delete = "delete from propertymanagementsystem.appointment where appointment_id = ?;";
-			PreparedStatement ps = DBconnection.getConnection().prepareStatement(Delete);
-			ps.setString(1, app_id.getText());
-			ps.execute();
-			
-			JOptionPane.showMessageDialog(null, "Record Deleted!");
-		}
-		catch (Exception O) {
-			JOptionPane.showMessageDialog(null, "ERROR!\n\tValues Missing");
-			O.printStackTrace();
-		}
-	}
+            JOptionPane.showMessageDialog(null, "Appointment API is not yet connected.");
+        }
+
+        private void UpdateAppointment() {
+            JOptionPane.showMessageDialog(null, "Appointment API is not yet connected.");
+        }
+
+        private void DeleteAppointment() {
+            JOptionPane.showMessageDialog(null, "Appointment API is not yet connected.");
+        }
 	
 	public void setVisible(boolean b) {
 		frame.setVisible(true);
