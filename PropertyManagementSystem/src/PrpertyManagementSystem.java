@@ -39,6 +39,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+
 public class PrpertyManagementSystem {
 	
 	JFrame frame;
@@ -56,6 +57,9 @@ public class PrpertyManagementSystem {
 	private JTextField p_id;
 	private JTable propertytable;
 	private JTable table;
+        private JTextField categoryId;
+        private JTextField categoryName;
+        private JTable categoryTable;
 
 	
 	public static void main(String[] args) {
@@ -941,10 +945,40 @@ public class PrpertyManagementSystem {
 			}
 		});
 		sidepanel.add(btnAppointment);
+                
+                // Categories Button
+JButton btnCategories = new JButton("Categories");
+btnCategories.setBounds(80, 482, 292, 63);
+btnCategories.setHorizontalTextPosition(SwingConstants.RIGHT);
+btnCategories.setIconTextGap(15);
+btnCategories.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+btnCategories.setForeground(Color.WHITE);
+btnCategories.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+btnCategories.setBackground(new Color(0, 139, 139));
+btnCategories.setOpaque(true);
+btnCategories.setContentAreaFilled(true);
+btnCategories.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
+btnCategories.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        tabbedPane.setSelectedIndex(4);
+    }
+});
+btnCategories.addMouseListener(new MouseAdapter() {
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        btnCategories.setBackground(new Color(95,158,160));
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        btnCategories.setBackground(new Color(0,139,139));
+    }
+});
+sidepanel.add(btnCategories);
 		
 		// Comments Button
 		JButton btnComments = new JButton("Comments");
-		btnComments.setBounds(80, 482, 292, 63);
+		btnComments.setBounds(80, 555, 292, 63);
 		btnComments.setHorizontalTextPosition(SwingConstants.RIGHT);
 		btnComments.setIconTextGap(15);
 		btnComments.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1064,6 +1098,175 @@ public class PrpertyManagementSystem {
 		lblLogo.setIcon(new ImageIcon(scaledLogo));
 		lblLogo.setBounds(126, 40, 120, 100);
 		sidepanel.add(lblLogo);
+                
+                //Categories tab
+                JPanel Categories = new JPanel();
+                Categories.setBackground(new Color(0, 139, 139));
+                tabbedPane.addTab("Categories", null, Categories, null);
+                Categories.setLayout(null);
+
+                JLabel lblCategoryTitle = new JLabel("Categories / House Types");
+                lblCategoryTitle.setHorizontalAlignment(SwingConstants.CENTER);
+                lblCategoryTitle.setForeground(Color.WHITE);
+                lblCategoryTitle.setFont(new Font("Bahnschrift", Font.BOLD, 26));
+                lblCategoryTitle.setBounds(300, 30, 450, 40);
+                Categories.add(lblCategoryTitle);
+
+                JScrollPane categoryScroll = new JScrollPane();
+                categoryScroll.setBounds(30, 100, 990, 300);
+                Categories.add(categoryScroll);
+
+                categoryTable = new JTable();
+                categoryScroll.setViewportView(categoryTable);
+
+                JLabel lblCategoryId = new JLabel("Category ID");
+                lblCategoryId.setForeground(Color.WHITE);
+                lblCategoryId.setFont(new Font("Tahoma", Font.BOLD, 12));
+                lblCategoryId.setBounds(30, 430, 120, 20);
+                Categories.add(lblCategoryId);
+
+                categoryId = new JTextField();
+                categoryId.setBounds(30, 455, 230, 34);
+                Categories.add(categoryId);
+
+                JLabel lblCategoryName = new JLabel("Category Name");
+                lblCategoryName.setForeground(Color.WHITE);
+                lblCategoryName.setFont(new Font("Tahoma", Font.BOLD, 12));
+                lblCategoryName.setBounds(300, 430, 120, 20);
+                Categories.add(lblCategoryName);
+
+                categoryName = new JTextField();
+                categoryName.setBounds(300, 455, 300, 34);
+                Categories.add(categoryName);
+
+                JButton btnLoadCategories = new JButton("LOAD");
+                btnLoadCategories.setBounds(30, 530, 90, 30);
+                Categories.add(btnLoadCategories);
+
+                JButton btnAddCategory = new JButton("ADD");
+                btnAddCategory.setBounds(150, 530, 90, 30);
+                Categories.add(btnAddCategory);
+
+                JButton btnUpdateCategory = new JButton("UPDATE");
+                btnUpdateCategory.setBounds(270, 530, 100, 30);
+                Categories.add(btnUpdateCategory);
+
+                JButton btnDeleteCategory = new JButton("DELETE");
+                btnDeleteCategory.setBounds(400, 530, 100, 30);
+                Categories.add(btnDeleteCategory);
+                
+                btnLoadCategories.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        try {
+            categoryTable.setModel(ApiClient.getCategoriesTableModel());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Failed to load categories: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+});
+
+btnAddCategory.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        try {
+            if (categoryName.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter category name.");
+                return;
+            }
+
+            ApiClient.addCategory(categoryName.getText().trim());
+
+            JOptionPane.showMessageDialog(null, "Category added successfully.");
+            categoryName.setText("");
+            categoryTable.setModel(ApiClient.getCategoriesTableModel());
+
+            p_type.setModel(ApiClient.getCategoriesComboBoxModel());
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Failed to add category: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+});
+
+btnUpdateCategory.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        try {
+            if (categoryId.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter category ID.");
+                return;
+            }
+
+            if (categoryName.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter category name.");
+                return;
+            }
+
+            ApiClient.updateCategory(
+                categoryId.getText().trim(),
+                categoryName.getText().trim()
+            );
+
+            JOptionPane.showMessageDialog(null, "Category updated successfully.");
+            categoryTable.setModel(ApiClient.getCategoriesTableModel());
+
+            p_type.setModel(ApiClient.getCategoriesComboBoxModel());
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Failed to update category: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+});
+
+btnDeleteCategory.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        try {
+            if (categoryId.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter category ID.");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(
+                null,
+                "Are you sure you want to delete this category?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            ApiClient.deleteCategory(categoryId.getText().trim());
+
+            JOptionPane.showMessageDialog(null, "Category deleted successfully.");
+            categoryId.setText("");
+            categoryName.setText("");
+            categoryTable.setModel(ApiClient.getCategoriesTableModel());
+
+            p_type.setModel(ApiClient.getCategoriesComboBoxModel());
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Failed to delete category: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+});
+
+categoryTable.addMouseListener(new MouseAdapter() {
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int row = categoryTable.getSelectedRow();
+
+        if (row >= 0) {
+            categoryId.setText(categoryTable.getValueAt(row, 0).toString());
+            categoryName.setText(categoryTable.getValueAt(row, 1).toString());
+        }
+    }
+});
+
+
 	}
 	
 	// ===== ALL YOUR EXISTING METHODS GO HERE =====
@@ -1273,6 +1476,6 @@ public class PrpertyManagementSystem {
         }
 	
 	public void setVisible(boolean b) {
-		frame.setVisible(true);
-	}
+            frame.setVisible(b);
+        }
 }

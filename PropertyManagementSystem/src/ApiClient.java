@@ -102,9 +102,44 @@ public class ApiClient {
         }
     }
 
-    return model;
-}
+        return model;
+    }
+    
+    public static javax.swing.table.DefaultTableModel getCategoriesTableModel() throws Exception {
+    String response = request("GET", "/desktop/categories", null);
+    ensureSuccess(response);
 
+    String[] columns = {
+        "id",
+        "name"
+    };
+
+        return toTableModel(response, columns); 
+    }
+
+    public static void addCategory(String name) throws Exception {
+        String json = "{"
+            + "\"name\":\"" + esc(name) + "\""
+            + "}";
+
+        String response = request("POST", "/desktop/categories", json);
+        ensureSuccess(response);
+    }
+
+    public static void updateCategory(String id, String name) throws Exception {
+        String json = "{"
+            + "\"name\":\"" + esc(name) + "\""
+            + "}";
+
+        String response = request("PUT", "/desktop/categories/" + id, json);
+        ensureSuccess(response);
+    }
+
+    public static void deleteCategory(String id) throws Exception {
+        String response = request("DELETE", "/desktop/categories/" + id, null);
+        ensureSuccess(response);
+    }
+    
     public static void addProperty(String propertyId, String address, String ownerNo, String ownerId, String propertyType, String rooms, String rent) throws Exception {
         String body = propertyJson(propertyId, address, ownerNo, ownerId, propertyType, rooms, rent);
         ensureSuccess(request("POST", "/desktop/properties", body));
