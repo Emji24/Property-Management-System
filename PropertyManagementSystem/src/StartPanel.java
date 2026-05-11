@@ -71,13 +71,13 @@ public class StartPanel extends JFrame {
 		JLabel lblNewLabel_2_1 = new JLabel("");
 		lblNewLabel_2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblNewLabel_2_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Client C = new Client();
-				C.setVisible(true);
-				dispose();
-			}
-		});
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        LoginFrame LF = new LoginFrame();
+                        LF.setVisible(true);
+                        dispose();
+                    }
+                });
                 
 		// Scale the client image to be larger/smaller
                 ImageIcon originalClientIcon = new ImageIcon("/Users/edmarsalido/Documents/Images/client.png");
@@ -89,13 +89,13 @@ public class StartPanel extends JFrame {
 		JLabel lblNewLabel_1_1 = new JLabel("CLIENT");
 		lblNewLabel_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblNewLabel_1_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				Client C = new Client();
-				C.setVisible(true);
-				dispose();	
-			}
-		});
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        LoginFrame LF = new LoginFrame();
+                        LF.setVisible(true);
+                        dispose();
+                    }
+                });
 		lblNewLabel_1_1.setForeground(new Color(255, 240, 245));
 		lblNewLabel_1_1.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		lblNewLabel_1_1.setBounds(520, 388, 98, 57);
