@@ -111,28 +111,6 @@ public class PrpertyManagementSystem {
 
 		// ===== PROPERTIES PANEL COMPONENTS =====
 		
-		JButton btnNewButton = new JButton("LOAD");
-		btnNewButton.setBounds(52, 684, 89, 30);
-		btnNewButton.setForeground(Color.BLACK);
-		btnNewButton.setBackground(new Color(204, 255, 204));
-		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton.setOpaque(true);
-		btnNewButton.setContentAreaFilled(true);
-		btnNewButton.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					propertytable.setModel(ApiClient.getPropertiesTableModel());
-					
-				} catch (Exception f) {
-					f.printStackTrace();
-                                        JOptionPane.showMessageDialog(null, "Failed to load properties from API: " + f.getMessage());
-				}
-				
-			}
-		});
-		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(1, 126, 1060, 274);
 		scrollPane_1.setFocusTraversalKeysEnabled(false);
@@ -145,10 +123,11 @@ public class PrpertyManagementSystem {
 		
 		propertytable = new JTable();
 		scrollPane_1.setViewportView(propertytable);
-		propertiespanel.add(btnNewButton);
+		// Auto-load saved properties when the admin dashboard opens
+		loadPropertiesFromApi();
 		
 		JButton btnNewButton_1 = new JButton("ADD");
-		btnNewButton_1.setBounds(180, 684, 89, 30);
+		btnNewButton_1.setBounds(52, 684, 89, 30);
 		btnNewButton_1.setForeground(Color.BLACK);
 		btnNewButton_1.setBackground(new Color(204, 255, 204));
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -164,7 +143,7 @@ public class PrpertyManagementSystem {
 		propertiespanel.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("UPDATE");
-		btnNewButton_2.setBounds(327, 684, 89, 30);
+		btnNewButton_2.setBounds(180, 684, 89, 30);
 		btnNewButton_2.setForeground(Color.BLACK);
 		btnNewButton_2.setBackground(new Color(204, 255, 204));
 		btnNewButton_2.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
@@ -180,7 +159,7 @@ public class PrpertyManagementSystem {
 		propertiespanel.add(btnNewButton_2);
 		
 		JButton btnNewButton_1_1 = new JButton("DELETE");
-		btnNewButton_1_1.setBounds(469, 684, 89, 30);
+		btnNewButton_1_1.setBounds(327, 684, 89, 30);
 		btnNewButton_1_1.setForeground(Color.BLACK);
 		btnNewButton_1_1.setBackground(new Color(204, 255, 204));
 		btnNewButton_1_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
@@ -331,31 +310,9 @@ public class PrpertyManagementSystem {
 		lblNewLabel_4_2_1.setBounds(382, 32, 359, 59);
 		panel_3_1.add(lblNewLabel_4_2_1);
 		
-		JButton btnNewButton_3_1 = new JButton("LOAD");
-		btnNewButton_3_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_3_1.setBounds(29, 670, 92, 30);
-		btnNewButton_3_1.setOpaque(true);
-		btnNewButton_3_1.setContentAreaFilled(true);
-		btnNewButton_3_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
-		btnNewButton_3_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					tenanttable.setModel(ApiClient.getTenantsTableModel());
-					
-				} catch (Exception f) {
-					f.printStackTrace();
-                                        JOptionPane.showMessageDialog(null, "Failed to load tenants from API: " + f.getMessage());
-				}
-			
-			}
-		});
-		btnNewButton_3_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNewButton_3_1.setBackground(new Color(204, 255, 204));
-		Tenants.add(btnNewButton_3_1);
-		
 		JButton add2_1 = new JButton("ADD");
 		add2_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		add2_1.setBounds(169, 670, 77, 30);
+		add2_1.setBounds(29, 670, 77, 30);
 		add2_1.setOpaque(true);
 		add2_1.setContentAreaFilled(true);
 		add2_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
@@ -370,7 +327,7 @@ public class PrpertyManagementSystem {
 		
 		JButton btnNewButton_2_1_1 = new JButton("UPDATE");
 		btnNewButton_2_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_2_1_1.setBounds(307, 670, 81, 30);
+		btnNewButton_2_1_1.setBounds(169, 670, 81, 30);
 		btnNewButton_2_1_1.setOpaque(true);
 		btnNewButton_2_1_1.setContentAreaFilled(true);
 		btnNewButton_2_1_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
@@ -385,7 +342,7 @@ public class PrpertyManagementSystem {
 		
 		JButton btnNewButton_1_1_1_1 = new JButton("DELETE");
 		btnNewButton_1_1_1_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnNewButton_1_1_1_1.setBounds(444, 670, 77, 30);
+		btnNewButton_1_1_1_1.setBounds(307, 670, 77, 30);
 		btnNewButton_1_1_1_1.setOpaque(true);
 		btnNewButton_1_1_1_1.setContentAreaFilled(true);
 		btnNewButton_1_1_1_1.setBorder(new LineBorder(new Color(0, 100, 0), 1, true));
@@ -518,6 +475,7 @@ public class PrpertyManagementSystem {
 		btnProperties.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tabbedPane.setSelectedIndex(0);
+				loadPropertiesFromApi();
 			}
 		});
 		btnProperties.addMouseListener(new MouseAdapter() {
@@ -550,6 +508,7 @@ public class PrpertyManagementSystem {
 		btnTenants.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tabbedPane.setSelectedIndex(1);
+				loadTenantsFromApi();
 			}
 		});
 		btnTenants.addMouseListener(new MouseAdapter() {
@@ -582,6 +541,7 @@ public class PrpertyManagementSystem {
 		btnCategories.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tabbedPane.setSelectedIndex(2);
+				loadCategoriesFromApi();
 			}
 		});
 		btnCategories.addMouseListener(new MouseAdapter() {
@@ -728,33 +688,18 @@ public class PrpertyManagementSystem {
                 categoryName.setBounds(300, 455, 300, 34);
                 Categories.add(categoryName);
 
-                JButton btnLoadCategories = new JButton("LOAD");
-                btnLoadCategories.setBounds(30, 530, 90, 30);
-                Categories.add(btnLoadCategories);
-
                 JButton btnAddCategory = new JButton("ADD");
-                btnAddCategory.setBounds(150, 530, 90, 30);
+                btnAddCategory.setBounds(30, 530, 90, 30);
                 Categories.add(btnAddCategory);
 
                 JButton btnUpdateCategory = new JButton("UPDATE");
-                btnUpdateCategory.setBounds(270, 530, 100, 30);
+                btnUpdateCategory.setBounds(150, 530, 100, 30);
                 Categories.add(btnUpdateCategory);
 
                 JButton btnDeleteCategory = new JButton("DELETE");
-                btnDeleteCategory.setBounds(400, 530, 100, 30);
+                btnDeleteCategory.setBounds(280, 530, 100, 30);
                 Categories.add(btnDeleteCategory);
                 
-                btnLoadCategories.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-        try {
-            categoryTable.setModel(ApiClient.getCategoriesTableModel());
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Failed to load categories: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-});
-
 btnAddCategory.addActionListener(new ActionListener() {
     public void actionPerformed(ActionEvent e) {
         try {
@@ -950,5 +895,32 @@ categoryTable.addMouseListener(new MouseAdapter() {
 	
 	public void setVisible(boolean b) {
             frame.setVisible(b);
+        }
+        
+        private void loadPropertiesFromApi() {
+            try {
+                propertytable.setModel(ApiClient.getPropertiesTableModel());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Failed to load properties from API: " + ex.getMessage());
+            }
+        }
+
+        private void loadTenantsFromApi() {
+            try {
+                tenanttable.setModel(ApiClient.getTenantsTableModel());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Failed to load tenants from API: " + ex.getMessage());
+            }
+        }
+
+        private void loadCategoriesFromApi() {
+            try {
+                categoryTable.setModel(ApiClient.getCategoriesTableModel());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Failed to load categories: " + ex.getMessage());
+            }
         }
 }
